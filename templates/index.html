@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block script %}
+<script>
+    function checkAll() {
+      var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = true;
+      }
+    }
+    function deleteNote(note) {
+        
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/delete";
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "note";
+            input.value = note;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        
+    }
+  </script>
+{% endblock %}
+
+
+{% block heading %}
+    todo LIST
+{% endblock %}
+
+{% block body %}
+<form action="{{ url_for('index') }}" method="post">
+    <input type="text" name="note" placeholder="Enter Note Here">
+    <button>Add Note</button>
+</form>
+<button onclick="checkAll()">Marcar todos</button>
+    <ol class="bold-list">
+        {% for note in notes %}
+            <li>
+                    <input type="checkbox" >
+                    <span>{{ note }}</span>
+                    <button onclick="deleteNote('{{ note }}')">Eliminar</button>
+            </li>
+        {% endfor %}
+    </ol>
+
+   
+{% endblock %}
